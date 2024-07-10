@@ -32,7 +32,7 @@ export default async function UserPostsPage({ params: { userID } }: Params) {
 
   return (
     <div>
-      <h2 className='text-xl m-5'>{user.name}'s Posts</h2>
+      <h2 className='text-3xl m-5 font-bold'>{user.name}'s Posts</h2>
       <Suspense fallback={<h2 className='text-3xl'>Posts are Loading...</h2>}>
         <UserPosts promise={postPromise} />
       </Suspense>

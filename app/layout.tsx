@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Nunito } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["Poppins"], variable: });
+const nunito = Nunito({
+  // weight: ["300", "400", "500", "700"],
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "Home Page",
@@ -16,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={inter.className}>
+      <body className={nunito.className}>
         <nav className='text-center font-medium text-2xl'>
           Application Navbar
         </nav>

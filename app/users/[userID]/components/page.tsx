@@ -12,7 +12,7 @@ export default async function UserPosts({ promise }: Props) {
               key={post.id}
               className='m-5'>
               <article>
-                <h2 className='text-2xl font-medium'>{post.title}</h2>
+                <h2 className='text-2xl font-bold'>{post.title}</h2>
                 <p>{post.body}</p>
               </article>
             </div>
