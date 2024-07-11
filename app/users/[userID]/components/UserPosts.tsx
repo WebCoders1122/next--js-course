@@ -5,7 +5,7 @@ type Props = {
 export default async function UserPosts({ promise }: Props) {
   const posts = await promise;
   return (
-    <>
+    <div>
       {posts && posts.length
         ? posts.map((post) => (
             <div
@@ -18,6 +18,6 @@ export default async function UserPosts({ promise }: Props) {
             </div>
           ))
         : null}
-    </>
+    </div>
   );
 }

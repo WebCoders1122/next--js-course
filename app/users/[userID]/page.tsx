@@ -2,8 +2,9 @@ import getUser from "@/lib/getUser";
 import getUserPosts from "@/lib/getUserPosts";
 import { Metadata } from "next";
 import { Suspense } from "react";
-import UserPosts from "./components/page";
-
+import UserPosts from "./components/UserPosts";
+import { notFound } from "next/navigation";
+import getUsers from "@/lib/getUsers";
 // export const metadata : Metadata ={
 //     title:
 // }
@@ -18,7 +19,12 @@ type Params = {
 export async function generateMetadata({
   params: { userID },
 }: Params): Promise<Metadata> {
-  const user = await getUser(userID);
+  const user: User = await getUser(userID);
+  if (!user) {
+    return {
+      title: "User Not Found",
+    };
+  }
   return {
     title: user.name,
     keywords: user.username,
@@ -27,15 +33,41 @@ export async function generateMetadata({
 }
 
 export default async function UserPostsPage({ params: { userID } }: Params) {
-  const user = await getUser(userID);
   const postPromise: Promise<Post[]> = getUserPosts(userID);
-
+  const user: User = await getUser(userID);
+  if (!user) return notFound();
   return (
     <div>
-      <h2 className='text-3xl m-5 font-bold'>{user.name}'s Posts</h2>
+      <h2 className='text-3xl m-5 font-bold'>{user.name}s Posts</h2>
       <Suspense fallback={<h2 className='text-3xl'>Posts are Loading...</h2>}>
         <UserPosts promise={postPromise} />
       </Suspense>
     </div>
   );
 }
+
+export async function generateStaticParams() {
+  const usersData: Promise<User[]> = getUsers();
+  const users = await usersData;
+
+  return users.map((user) => ({
+    userID: user.id.toString(),
+  }));
+}
+
+// export async function generateStaticParams() {
+//   const usersData: Promise<User[]> = getUsers();
+//   const users = await usersData;
+//   return users.map((user) => ({
+//     userID: user.id.toString(),
+//   }));
+// }
+
+// export async function generateStaticParams() {
+//   const usersData: Promise<User[]> = getUsers();
+//   const users = await usersData;
+
+//   return users.map((user) => ({
+//     userID: user.id.toString(),
+//   }));
+// }
