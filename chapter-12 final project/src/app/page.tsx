@@ -6,7 +6,8 @@ import PostListing from "./components/PostListing";
 export const metadata: Metadata = {
   title: "Welcome to MyBlog",
 };
-export const revalidate = 0;
+export const revalidate = 86400;
+
 export default async function Home() {
   const postsMeta = await getPostsMeta();
 

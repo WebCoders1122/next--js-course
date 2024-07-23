@@ -1,7 +1,10 @@
 import NotFound from "./not-found";
 import getFormattedDate from "../../../../lib/getFormattedDate";
 import Link from "next/link";
-import { getPostdataByName } from "../../../../lib/getPostsData";
+import { getPostdataByName, getPostsMeta } from "../../../../lib/getPostsData";
+import "highlight.js/styles/night-owl.css";
+
+export const revalidate = 86400;
 
 type Props = {
   params: { postID: string };
@@ -40,7 +43,7 @@ const PostPage = async ({ params: { postID } }: Props) => {
       <article>{post.content}</article>
       <section>
         <h3>Related:</h3>
-        {/* <div className='flex flex-row gap-4'>{tags}</div> */}
+        <div className='flex flex-row gap-4'>{tags}</div>
       </section>
       <p className='mb-10'>
         <Link href='/'>← Back to home</Link>
@@ -50,8 +53,9 @@ const PostPage = async ({ params: { postID } }: Props) => {
 };
 export default PostPage;
 
-// export function generateStaticParams() {
-//   const postsData: blogPost[] = getPostsData();
-//   const params = postsData.map((post) => post.id);
-//   return params;
-// }
+export async function generateStaticParams() {
+  const postsData = await getPostsMeta();
+  if (!postsData) return [];
+  const params = postsData.map((post) => ({ postID: post.id }));
+  return params;
+}

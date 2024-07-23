@@ -1,4 +1,9 @@
 import { compileMDX } from "next-mdx-remote/rsc";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeHighlight from "rehype-highlight";
+import rehypeSlug from "rehype-slug";
+import Video from "@/app/components/Video";
+import CustomImage from "@/app/components/CustomImage";
 
 export const getPostdataByName = async (
   postName: string
@@ -25,8 +30,19 @@ export const getPostdataByName = async (
     tags: string[];
   }>({
     source: rawMDX,
+    components: {
+      Video,
+      CustomImage,
+    },
     options: {
       parseFrontmatter: true,
+      mdxOptions: {
+        rehypePlugins: [
+          rehypeSlug,
+          rehypeHighlight,
+          [rehypeAutolinkHeadings, { behavior: "wrap" }],
+        ],
+      },
     },
   });
   //getting ids from file names for static paths
